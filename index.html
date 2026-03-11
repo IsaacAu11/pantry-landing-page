@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pantry – Smart Grocery Savings for Students</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1e7a4a;
+    --green-light: #2d9e60;
+    --green-pale: #e8f5ee;
+    --green-mid: #a8d9bc;
+    --white: #fafaf8;
+    --cream: #f4f1eb;
+    --dark: #0f1f16;
+    --text: #1a2e22;
+    --muted: #5a7566;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw;
+    background: rgba(250,250,248,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(30,122,74,0.1);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .nav-logo svg { width: 28px; height: 28px; }
+
+  nav ul {
+    list-style: none;
+    display: flex; gap: 2rem;
+  }
+
+  nav ul a {
+    font-size: 0.88rem; font-weight: 500;
+    color: var(--muted); text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green);
+    color: #fff !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { background: var(--green-light) !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 7rem 5vw 4rem;
+    gap: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -15%;
+    width: 60vw; height: 60vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, #d4eddf 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--green-pale);
+    color: var(--green);
+    border: 1px solid var(--green-mid);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge span { font-size: 1rem; }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.1;
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem; line-height: 1.65;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 2.2rem;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    font-size: 0.95rem; font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(30,122,74,0.25);
+  }
+  .btn-primary:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(30,122,74,0.3); }
+
+  .btn-ghost {
+    color: var(--green);
+    font-size: 0.9rem; font-weight: 500;
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+  .btn-ghost:hover { gap: 0.7rem; }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 3rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--green);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+  /* ── PHONE MOCKUP ── */
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .phone-wrap {
+    position: relative;
+    width: 300px;
+  }
+
+  .phone {
+    width: 280px;
+    background: var(--dark);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 0 40px 80px rgba(15,31,22,0.35), 0 0 0 1px rgba(255,255,255,0.08);
+    position: relative;
+    z-index: 2;
+  }
+
+  .phone-inner {
+    background: #fff;
+    border-radius: 30px;
+    overflow: hidden;
+    padding-bottom: 1rem;
+  }
+
+  .phone-status {
+    background: var(--dark);
+    color: #fff;
+    font-size: 0.65rem;
+    text-align: center;
+    padding: 0.5rem 0 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .phone-header {
+    background: linear-gradient(135deg, var(--green) 0%, #27ae60 100%);
+    padding: 1.5rem 1.2rem 1.2rem;
+    color: #fff;
+  }
+
+  .phone-greeting { font-size: 0.7rem; opacity: 0.8; margin-bottom: 0.2rem; }
+  .phone-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+  .phone-saved {
+    margin-top: 1rem;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .phone-saved-label { font-size: 0.65rem; opacity: 0.8; }
+  .phone-saved-amount { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
+
+  .phone-section { padding: 1rem 1rem 0; }
+  .phone-section-title { font-size: 0.65rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+
+  .deal-card {
+    background: var(--green-pale);
+    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .deal-icon { font-size: 1.2rem; }
+  .deal-name { font-size: 0.72rem; font-weight: 600; color: var(--dark); }
+  .deal-sub { font-size: 0.6rem; color: var(--muted); }
+  .deal-badge {
+    margin-left: auto;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.6rem; font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 100px;
+  }
+
+  .floating-card {
+    position: absolute;
+    background: #fff;
+    border-radius: 14px;
+    padding: 0.7rem 1rem;
+    box-shadow: 0 8px 32px rgba(15,31,22,0.15);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--dark);
+    white-space: nowrap;
+    z-index: 3;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .fc-1 { top: 10%; left: -30%; animation-delay: 0s; }
+  .fc-2 { bottom: 20%; right: -20%; animation-delay: 1.5s; }
+
+  .fc-green { color: var(--green); font-size: 1rem; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding: 6rem 5vw; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.15; color: var(--dark);
+    margin-bottom: 1rem;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.65; max-width: 520px; font-weight: 300; }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; margin-top: 3.5rem;
+  }
+
+  .step {
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(30,122,74,0.12);
+    background: var(--white);
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .step:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(30,122,74,0.12); border-color: var(--green-mid); }
+  .step:hover::before { opacity: 1; }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900;
+    color: var(--green-mid);
+    line-height: 1; margin-bottom: 1rem;
+  }
+  .step h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--dark); }
+  .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── SAVINGS SHOWCASE ── */
+  .savings-section {
+    background: var(--dark);
+    padding: 6rem 5vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .savings-section::before {
+    content: '';
+    position: absolute;
+    top: -30%; left: -10%;
+    width: 50vw; height: 50vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30,122,74,0.3) 0%, transparent 60%);
+  }
+
+  .savings-section .section-title { color: #fff; }
+  .savings-section .section-label { color: var(--green-mid); }
+  .savings-section .section-sub { color: rgba(255,255,255,0.55); }
+
+  .savings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem; margin-top: 3.5rem;
+    position: relative; z-index: 1;
+  }
+
+  .saving-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+  .saving-card:hover { background: rgba(255,255,255,0.08); }
+
+  .saving-stores { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
+  .store-tag {
+    font-size: 0.72rem; font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
+    background: rgba(30,122,74,0.25);
+    color: var(--green-mid);
+    border: 1px solid rgba(30,122,74,0.3);
+  }
+
+  .saving-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.4rem; }
+  .saving-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--green-light);
+    margin-bottom: 0.4rem;
+  }
+  .saving-sub { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+
+  /* ── PRICING ── */
+  .pricing-section { padding: 6rem 5vw; background: var(--cream); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem; margin-top: 3.5rem;
+    max-width: 800px;
+  }
+
+  .price-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .price-card.featured {
+    background: var(--green);
+    color: #fff;
+    border-color: var(--green);
+    transform: scale(1.02);
+  }
+
+  .price-tier { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .price-card.featured .price-tier { color: rgba(255,255,255,0.7); }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 700;
+    color: var(--dark);
+    line-height: 1;
+  }
+  .price-card.featured .price-amount { color: #fff; }
+  .price-period { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; font-weight: 300; }
+  .price-card.featured .price-period { color: rgba(255,255,255,0.7); }
+
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+  .price-features li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--text); }
+  .price-card.featured .price-features li { color: rgba(255,255,255,0.9); }
+
+  .check { color: var(--green); font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+  .price-card.featured .check { color: rgba(255,255,255,0.9); }
+
+  .price-btn {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 100px;
+    text-align: center;
+    font-weight: 600; font-size: 0.9rem;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s;
+  }
+  .price-btn-outline {
+    border: 2px solid var(--green-mid);
+    color: var(--green);
+  }
+  .price-btn-outline:hover { background: var(--green-pale); }
+  .price-btn-white {
+    background: #fff;
+    color: var(--green);
+  }
+  .price-btn-white:hover { background: var(--green-pale); }
+
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 6rem 5vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--green) 0%, #0f5e31 100%);
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: 50%;
+    transform: translateX(-50%);
+    width: 80vw; height: 80vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+  }
+
+  .cta-section .section-title { color: #fff; text-align: center; }
+  .cta-section .section-sub { color: rgba(255,255,255,0.7); text-align: center; margin: 0 auto 2.5rem; }
+
+  .cta-form {
+    display: flex; gap: 0.8rem; justify-content: center;
+    max-width: 460px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 0.85rem 1.3rem;
+    border-radius: 100px;
+    border: none;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+  .cta-input::placeholder { color: rgba(255,255,255,0.55); }
+  .cta-input:focus { background: rgba(255,255,255,0.2); }
+
+  .cta-submit {
+    background: #fff;
+    color: var(--green);
+    padding: 0.85rem 1.8rem;
+    border-radius: 100px;
+    border: none;
+    font-size: 0.9rem; font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .cta-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+
+  .cta-small { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem 5vw;
+    border-top: 1px solid rgba(30,122,74,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--green); text-decoration: none;
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--green); }
+
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; }
+    .hero-sub { margin: 0 auto 2.2rem; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { display: none; }
+    .steps-grid, .savings-grid, .testimonials-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="14" fill="#1e7a4a"/>
+      <path d="M14 7 C14 7 8 10 8 15.5 C8 19 10.5 21 14 21 C17.5 21 20 19 20 15.5 C20 10 14 7 14 7Z" fill="white" opacity="0.9"/>
+      <path d="M14 11 L14 19 M11 15 C11 15 12.5 13.5 14 14.5 C15.5 15.5 17 14 17 14" stroke="#1e7a4a" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Pantry
+  </a>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#savings">Savings</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#signup" class="nav-cta">Get early access</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span>🎓</span> Built for UK students</div>
+    <h1>Save money on<br><em>every</em> grocery shop</h1>
+    <p class="hero-sub">Pantry scans prices across Aldi, Lidl, Tesco, and more — surfacing the best deals so you spend less on food and more on living.</p>
+    <div class="hero-actions">
+      <a href="#signup" class="btn-primary">Start saving free →</a>
+      <a href="#how" class="btn-ghost">See how it works <span>↓</span></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">£47</div>
+        <div class="stat-label">avg. monthly savings</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">retailers compared</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Free</div>
+        <div class="stat-label">to get started</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="floating-card fc-1">💚 <span class="fc-green">£3.40</span> saved this week!</div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="phone-status">9:41</div>
+          <div class="phone-header">
+            <div class="phone-greeting">Good morning, Alex 👋</div>
+            <div class="phone-title">Your Pantry</div>
+            <div class="phone-saved">
+              <div>
+                <div class="phone-saved-label">Saved this month</div>
+                <div class="phone-saved-amount">£47.20</div>
+              </div>
+              <div style="font-size:1.8rem">🛒</div>
+            </div>
+          </div>
+          <div class="phone-section">
+            <div class="phone-section-title">Today's best deals</div>
+            <div class="deal-card">
+              <div class="deal-icon">🥛</div>
+              <div>
+                <div class="deal-name">4pt Semi-Skimmed Milk</div>
+                <div class="deal-sub">Aldi — £1.09 vs £1.45 Tesco</div>
+              </div>
+              <div class="deal-badge">Save 25%</div>
+            </div>
+            <div class="deal-card">
+              <div class="deal-icon">🍞</div>
+              <div>
+                <div class="deal-name">Wholemeal Bread 800g</div>
+                <div class="deal-sub">Lidl — £0.89 vs £1.20 Sainsbury's</div>
+              </div>
+              <div class="deal-badge">Save 26%</div>
+            </div>
+            <div class="deal-card">
+              <div class="deal-icon">🥚</div>
+              <div>
+                <div class="deal-name">Free Range Eggs x12</div>
+                <div class="deal-sub">Morrisons — £2.49 vs £3.10 Waitrose</div>
+              </div>
+              <div class="deal-badge">Save 20%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="floating-card fc-2">🔔 New deal near you!</div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="reveal">
+    <div class="section-label">Simple by design</div>
+    <h2 class="section-title">How Pantry works</h2>
+    <p class="section-sub">No clipping coupons, no loyalty card juggling. Just smarter shopping in three steps.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h3>Build your basket</h3>
+      <p>Add the groceries you buy regularly. Pantry learns your habits and preferences over time.</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.1s">
+      <div class="step-num">02</div>
+      <h3>We compare the prices</h3>
+      <p>Pantry scans prices across 12+ UK retailers in real time — from Aldi to Ocado — so you never need to.</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.2s">
+      <div class="step-num">03</div>
+      <h3>Shop smarter, save more</h3>
+      <p>We surface the best deals and show you exactly where to shop this week for maximum savings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAVINGS SHOWCASE -->
+<section class="savings-section" id="savings">
+  <div class="reveal">
+    <div class="section-label">Real savings, real students</div>
+    <h2 class="section-title">The difference adds up fast</h2>
+    <p class="section-sub">University budgets are tight. Pantry helps you stretch every pound — without compromising on what you eat.</p>
+  </div>
+  <div class="savings-grid">
+    <div class="saving-card reveal">
+      <div class="saving-stores">
+        <span class="store-tag">Aldi</span>
+        <span class="store-tag">Lidl</span>
+      </div>
+      <div class="saving-title">Weekly essentials basket</div>
+      <div class="saving-amount">£12.40 saved</div>
+      <div class="saving-sub">vs equivalent Tesco branded shop</div>
+    </div>
+    <div class="saving-card reveal" style="transition-delay:0.1s">
+      <div class="saving-stores">
+        <span class="store-tag">Morrisons</span>
+        <span class="store-tag">Sainsbury's</span>
+      </div>
+      <div class="saving-title">Monthly meal plan</div>
+      <div class="saving-amount">£47.20 saved</div>
+      <div class="saving-sub">average across 200+ student users</div>
+    </div>
+    <div class="saving-card reveal" style="transition-delay:0.2s">
+      <div class="saving-stores">
+        <span class="store-tag">All retailers</span>
+      </div>
+      <div class="saving-title">Annual student saving</div>
+      <div class="saving-amount">£566+ saved</div>
+      <div class="saving-sub">over a full academic year</div>
+    </div>
+    <div class="saving-card reveal" style="transition-delay:0.3s">
+      <div class="saving-stores">
+        <span class="store-tag">Pantry Pro</span>
+      </div>
+      <div class="saving-title">Pro plan ROI</div>
+      <div class="saving-amount">20× return</div>
+      <div class="saving-sub">£566 saved on a £2.99/mo subscription</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="reveal">
+    <div class="section-label">Honest pricing</div>
+    <h2 class="section-title">Free to start. Even better with Pro.</h2>
+    <p class="section-sub">Start saving immediately at no cost. Upgrade when you want more.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="price-tier">Free</div>
+      <div class="price-amount">£0</div>
+      <div class="price-period">forever free</div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Price comparison across 5 retailers</li>
+        <li><span class="check">✓</span> Weekly deal alerts</li>
+        <li><span class="check">✓</span> Basic basket builder</li>
+        <li><span class="check">✓</span> Up to 20 items tracked</li>
+      </ul>
+      <a href="#signup" class="price-btn price-btn-outline">Get started free</a>
+    </div>
+    <div class="price-card featured reveal" style="transition-delay:0.1s">
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">£2.99</div>
+      <div class="price-period">per month · cancel anytime</div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> All 12+ retailers compared</li>
+        <li><span class="check">✓</span> Daily personalised deals</li>
+        <li><span class="check">✓</span> Unlimited items tracked</li>
+        <li><span class="check">✓</span> Smart meal planning</li>
+        <li><span class="check">✓</span> Price history & trend alerts</li>
+        <li><span class="check">✓</span> Exclusive cashback offers</li>
+      </ul>
+      <a href="#signup" class="price-btn price-btn-white">Get Pantry Pro</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA / SIGNUP -->
+<section class="cta-section" id="signup">
+  <div class="section-label" style="color:rgba(255,255,255,0.6)">Early access</div>
+  <h2 class="section-title" style="color:#fff;text-align:center">Join the waitlist.<br>Start saving sooner.</h2>
+  <p class="section-sub" style="color:rgba(255,255,255,0.65);text-align:center;margin:0.8rem auto 2.5rem">
+    Be first to access Pantry when we launch. No spam, just your invite.
+  </p>
+  <form class="cta-form" onsubmit="handleSignup(event)">
+    <input type="email" class="cta-input" placeholder="your@student.ac.uk" required id="email-input">
+    <button type="submit" class="cta-submit">Join waitlist</button>
+  </form>
+  <p class="cta-small" id="form-msg">🔒 No spam. Unsubscribe anytime.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">🌿 Pantry</a>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <p class="footer-copy">© 2026 Pantry. Built in Bath 🛁</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Sign up form
+  function handleSignup(e) {
+    e.preventDefault();
+    const input = document.getElementById('email-input');
+    const msg = document.getElementById('form-msg');
+    if (input.value) {
+      msg.textContent = '🎉 You\'re on the list! We\'ll be in touch soon.';
+      msg.style.color = 'rgba(255,255,255,0.9)';
+      input.value = '';
+    }
+  }
+</script>
+</body>
+</html>
