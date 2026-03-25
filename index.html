@@ -321,6 +321,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem; font-weight: 700;
       color: var(--green); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
     }
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
@@ -348,7 +349,16 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">🌿 Pantry</a>
+  <a href="#" class="nav-logo">
+    <svg width="30" height="30" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="#eef2e6"/>
+      <circle cx="14" cy="8.5" r="2.2" stroke="#4a6741" stroke-width="1.6" fill="none"/>
+      <line x1="14" y1="10.7" x2="14" y2="22" stroke="#4a6741" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M14 16 C14 16 9 15 8.5 11.5 C8.5 11.5 12.5 10.5 14 14" fill="#9db88a"/>
+      <path d="M14 16 C14 16 19 15 19.5 11.5 C19.5 11.5 15.5 10.5 14 14" fill="#4a6741"/>
+    </svg>
+    Pantry
+  </a>
   <ul>
     <li><a href="#how">How it works</a></li>
     <li><a href="#savings">Savings</a></li>
@@ -534,16 +544,6 @@
 <section class="cta-section" id="signup">
   <h2>Be first to know when we launch</h2>
   <p>Join the waitlist and get early access + a free month of Pro.</p>
-
-  <!--
-    ════════════════════════════════════════════════════════════
-    FORMSPREE SETUP — 3 steps:
-      1. Go to https://formspree.io and create a free account
-      2. Create a new form — copy your endpoint URL
-         (looks like: https://formspree.io/f/xyzabc12)
-      3. Replace YOUR_FORMSPREE_ENDPOINT below with that URL
-    ════════════════════════════════════════════════════════════
-  -->
   <form class="cta-form" id="waitlist-form">
     <input
       type="email"
@@ -554,19 +554,28 @@
     />
     <button type="submit" class="cta-submit" id="submit-btn">Join waitlist</button>
   </form>
-  <p class="cta-small" id="form-msg">🔒 No spam. Unsubscribe anytime.</p>
+  <p class="cta-small" id="form-msg">Unsubscribe anytime.</p>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-logo">🌿 Pantry</a>
+  <a href="#" class="footer-logo">
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="#eef2e6"/>
+      <circle cx="14" cy="8.5" r="2.2" stroke="#4a6741" stroke-width="1.6" fill="none"/>
+      <line x1="14" y1="10.7" x2="14" y2="22" stroke="#4a6741" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M14 16 C14 16 9 15 8.5 11.5 C8.5 11.5 12.5 10.5 14 14" fill="#9db88a"/>
+      <path d="M14 16 C14 16 19 15 19.5 11.5 C19.5 11.5 15.5 10.5 14 14" fill="#4a6741"/>
+    </svg>
+    Pantry
+  </a>
   <div class="footer-links">
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
     <a href="#">About</a>
     <a href="#">Contact</a>
   </div>
-  <p class="footer-copy">© 2026 Pantry. Built in Bath 🛁</p>
+  <p class="footer-copy">© 2026 Pantry. Built in Bath</p>
 </footer>
 
 <script>
@@ -583,7 +592,7 @@
   reveals.forEach(r => observer.observe(r));
 
   // ── Formspree waitlist submission ──
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzabc12';
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvzvplvj';
   // ↑ Replace with your actual endpoint, e.g. 'https://formspree.io/f/xyzabc12'
 
   const form = document.getElementById('waitlist-form');
@@ -597,7 +606,6 @@
     const email = emailInput.value.trim();
     if (!email) return;
 
-    // Disable button while submitting
     submitBtn.disabled = true;
     submitBtn.textContent = 'Joining...';
     formMsg.textContent = '';
@@ -613,13 +621,11 @@
       });
 
       if (response.ok) {
-        // Success
         emailInput.value = '';
         submitBtn.style.display = 'none';
         emailInput.style.display = 'none';
         formMsg.innerHTML = '🎉 <strong style="color:#fff">You\'re on the list!</strong> We\'ll be in touch when we launch.';
       } else {
-        // Formspree returned an error
         const data = await response.json();
         throw new Error(data.error || 'Submission failed');
       }
